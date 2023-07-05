@@ -1585,7 +1585,6 @@ def get_gks_bulk_collect(
         )
         & (ht.alleles == [ref_in, alt_in])
     )
-
     # ht = ht.checkpoint(new_temp_file("get_gks", extension="ht"))
 
     # Check to ensure the ht is successfully filtered to 1 variant.
