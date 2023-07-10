@@ -598,6 +598,7 @@ def gnomad_gks_batch(
     annotations = filtered.select(
         gks_va_freq_dict=hl.json(filtered.gks_va_freq_dict), vrs_json=filtered.vrs_json
     ).collect()  # might be big
+
     outputs = []
     for ann in annotations:
         vrs_json = ann.vrs_json
@@ -607,9 +608,15 @@ def gnomad_gks_batch(
         va_freq_dict = json.loads(ann.gks_va_freq_dict)  # Hail Struct as json
         va_freq_dict["focusAllele"] = vrs_variant
 
+        locus = {
+            "contig": ann.locus.contig,
+            "position": ann.locus.position,
+            "reference_genome": ann.locus.reference_genome.name,
+        }
+
         outputs.append(
             {
-                "locus": ann.locus,
+                "locus": locus,
                 "alleles": ann.alleles,
                 "gks_va_freq": va_freq_dict,
                 "gks_vrs_variant": vrs_variant,
